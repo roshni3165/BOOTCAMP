@@ -1,0 +1,45 @@
+class Solution:
+    def splitIntoFibonacci(self, num: str) -> List[int]:
+        result = []
+
+        def backtrack(index):
+            # Entire string has been used
+            if index == len(num):
+                return len(result) >= 3
+
+            current = 0
+
+            for j in range(index, len(num)):
+                # Leading zero is not allowed
+                if j > index and num[index] == '0':
+                    break
+
+                current = current * 10 + int(num[j])
+
+                # Fibonacci numbers must fit in 32-bit signed integer
+                if current > 2**31 - 1:
+                    break
+
+                # Once we have 2 numbers, current must equal their sum
+                if len(result) >= 2:
+                    target = result[-1] + result[-2]
+
+                    if current < target:
+                        continue
+
+                    if current > target:
+                        break
+
+                result.append(current)
+
+                if backtrack(j + 1):
+                    return True
+
+                result.pop()
+
+            return False
+
+        if backtrack(0):
+            return result
+
+        return []
