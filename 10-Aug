@@ -1,0 +1,20 @@
+class Solution:
+    def shiftGrid(self, grid, k):
+        m = len(grid)
+        n = len(grid[0])
+
+        # Convert 2D grid to 1D
+        arr = []
+        for row in grid:
+            arr.extend(row)
+
+        # Shift
+        k = k % (m * n)
+        arr = arr[-k:] + arr[:-k]
+
+        # Convert back to 2D
+        result = []
+        for i in range(0, m * n, n):
+            result.append(arr[i:i+n])
+
+        return result
